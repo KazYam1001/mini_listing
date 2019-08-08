@@ -1,0 +1,84 @@
+<div class = content >
+  <%= form_for @product do |f| %>
+
+    <div id="image-box">
+      <div id="previews">
+        <% if @product.persisted? %>
+          <% @product.images.each_with_index do |image, i| %>
+            <%= image_tag image.image.url, data: { index: i }, width: "100", height: '100' %>
+          <% end %>
+        <% end %>
+      </div>
+      <%= f.fields_for :images do |image| %>
+        <div class="js-file_group">
+          <%= image.file_field :image, data:{ index: image.index }, class: 'js-file' %>
+          <div class="js-remove" data-index="<%= image.index %>" >削除</div>
+        </div>
+        <% if @product.persisted? %>
+          <%= image.check_box :_destroy, class: 'hidden-check' %>
+        <% end %>
+      <% end %>
+      <% if @product.persisted? %>
+        <div class="js-file_group">
+          <%= file_field_tag :image, name: "product[images_attributes][#{@product.images.count}][image]", data:{ index: @product.images.count }, class: 'js-file' %>
+          <div class="js-remove" data-index="<%= @product.images.count %>" >削除</div>
+        </div>
+      <% end %>
+    </div>
+
+
+    <P>商品名</p>
+    <%= f.text_field :name %>
+    <p>商品説明</p>
+    <%= f.text_area :description %>
+    <p>商品状態</p>
+    <%= f.collection_select :state_id, State.all, :id, :name %>
+    <p>配送料負担</p>
+    <%= f.collection_select :delivery_fee_id, DeliveryFee.all, :id, :name %>
+    <p>配送方法</p>
+    <%= f.collection_select :delivery_way_id, DeliveryWay.all, :id, :name %>
+    <p>配送元 都道府県</p>
+    <%= f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :code, :name %>
+    <p>配送までの日数</p>
+    <%= f.text_field :delivery_day %>日
+    <p>販売価格</p>
+    <%= f.text_field :price %>円
+    <%= f.submit %>
+  <% end %>
+
+  <a class="btn" href="/">トップページに戻る</a>
+</div>
+
+<script>
+$(function(){
+  //画像ファイルプレビュー表示のイベント追加 fileを選択時に発火するイベントを登録
+  $('form').on('change', 'input[type="file"]', function(e) {
+    var file = e.target.files[0],
+        reader = new FileReader(),
+        $preview = $(".preview");
+        t = this;
+
+    // 画像ファイル以外の場合は何もしない
+    if(file.type.indexOf("image") < 0){
+      return false;
+    }
+
+    // ファイル読み込みが完了した際のイベント登録
+    reader.onload = (function(file) {
+      return function(e) {
+        //既存のプレビューを削除
+        $preview.empty();
+        // .prevewの領域の中にロードした画像を表示するimageタグを追加
+        $preview.append($('<img>').attr({
+                  src: e.target.result,
+                  width: "150px",
+                  class: "preview",
+                  title: file.name
+              }));
+      };
+    })(file);
+
+    reader.readAsDataURL(file);
+  });
+});
+</script>
