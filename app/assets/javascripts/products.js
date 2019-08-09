@@ -1,27 +1,29 @@
 $(document).on('turbolinks:load', ()=> {
   // 画像用のfile_fieldを生成する関数
-  const buildFileField = (num)=> {
+  const buildFileField = (index)=> {
     const html = `<div class="js-file_group">
-                    <input class="js-file" type="file" data-index="${num}"
-                    name="product[images_attributes][${num}][image]"
-                    id="product_images_attributes_${num}_image"><br>
-                    <div class="js-remove" data-index="${num}">削除</div>
+                    <input class="js-file" type="file" data-index="${index}"
+                    name="product[images_attributes][${index}][image]"
+                    id="product_images_attributes_${index}_image"><br>
+                    <div class="js-remove" data-index="${index}">削除</div>
                   </div>`;
     return html;
   }
 
-  const buildImg = (num, url)=> {
-    const html = `<img data-index="${num}" src="${url}" width="100px" height="100px">`;
+  const buildImg = (index, url)=> {
+    const html = `<img data-index="${index}" src="${url}" width="100px" height="100px">`;
     return html;
   }
 
   // file_fieldのnameに動的なindexをつける為の配列
   let fileNumbers = [1,2,3,4,5,6,7,8,9,10];
   // 既に使われているindexを除外
-  lastIndex = $('.js-remove:last').data('index')
+  lastIndex = $('input[type="file"]:last').data('index')
   fileNumbers.splice(0, lastIndex)
-  console.log(fileNumbers)
+  // labelのforを最後のinputのindexに合わせる
+  $('.js-file_label').attr('for', `product_images_attributes_${lastIndex}_image`);
   // $('.hidden-check').hide();
+
 
   $('#image-box').on('change', '.js-file', function(e) {
     const targetIndex = $(this).data('index')
@@ -48,7 +50,7 @@ $(document).on('turbolinks:load', ()=> {
     hiddenCheck = document.getElementById(`product_images_attributes_${targetIndex}__destroy`)
     console.log(targetIndex)
     if (hiddenCheck) {
-      $(this).parent().next().next().prop('checked', true)
+      $(`input[data-destroy="${targetIndex}"]`).prop('checked', true)
     }
     // fileのinputと対応するプレビューを削除
     $(this).parent().remove()

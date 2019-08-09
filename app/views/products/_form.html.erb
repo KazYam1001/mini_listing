@@ -5,25 +5,29 @@
       <div id="previews">
         <% if @product.persisted? %>
           <% @product.images.each_with_index do |image, i| %>
-            <%= image_tag image.image.url, data: { index: i }, width: "100", height: '100' %>
+            <div class="preview">
+              <%= image_tag image.image.url, data: { index: i }, width: "100", height: '100' %>
+              <div class="js-remove" data-index="<%= i %>" >削除</div>
+            </div>
           <% end %>
         <% end %>
+        <%= label_tag :image, "ドラッグ＆ドロップ", class: "js-file_label" %>
       </div>
-      <%= f.fields_for :images do |image| %>
-        <div class="js-file_group">
-          <%= image.file_field :image, data:{ index: image.index }, class: 'js-file' %>
-          <div class="js-remove" data-index="<%= image.index %>" >削除</div>
-        </div>
-        <% if @product.persisted? %>
-          <%= image.check_box :_destroy, class: 'hidden-check' %>
+      <div class='js-file_input'>
+        <%= f.fields_for :images do |image| %>
+          <div class="js-file_group">
+            <%= image.file_field :image, data:{ index: image.index }, class: 'js-file' %>
+          </div>
+          <% if @product.persisted? %>
+            <%= image.check_box :_destroy, class: 'hidden-check', data:{destroy: image.index} %>
+          <% end %>
         <% end %>
-      <% end %>
-      <% if @product.persisted? %>
-        <div class="js-file_group">
-          <%= file_field_tag :image, name: "product[images_attributes][#{@product.images.count}][image]", data:{ index: @product.images.count }, class: 'js-file' %>
-          <div class="js-remove" data-index="<%= @product.images.count %>" >削除</div>
-        </div>
-      <% end %>
+        <% if @product.persisted? %>
+          <div class="js-file_group">
+            <%= file_field_tag :image, name: "product[images_attributes][#{@product.images.length}][image]", data:{ index: @product.images.length }, class: 'js-file', id: "product_images_attributes_#{@product.images.length}_image" %>
+          </div>
+        <% end %>
+      </div>
     </div>
 
 
