@@ -19,14 +19,13 @@ $(document).on('turbolinks:load', ()=> {
   }
 
   // file_fieldのnameに動的なindexをつける為の配列
-  let fileNumbers = [1,2,3,4,5,6,7,8,9,10];
-  // 既に使われているindexを除外
-  lastIndex = $('input[type="file"]:last').data('index')
-  fileNumbers.splice(0, lastIndex)
+  lastIndex = $('input[type="file"]:last').data('index');
+  let fileNumbers = [lastIndex + 1];
   // labelのforを最後のinputのindexに合わせる
   $('.js-file_label').attr('for', `product_images_attributes_${lastIndex}_image`);
   $('.js-file_input').hide();
-
+  if ($('.preview').length == 10) { $('.js-file_label').hide(); }
+  console.log(fileNumbers)
 
   $('.js-file_input').on('change', '.js-file', function(e) {
     const targetIndex = $(this).data('index')
@@ -43,9 +42,9 @@ $(document).on('turbolinks:load', ()=> {
       // fileNumbersの先頭の数字を使ってnameを作り、その数字を配列から取り除く
       $('.js-file_input').append(buildFileField(fileNumbers[0]));
       $('.js-file_label').attr('for', `product_images_attributes_${fileNumbers[0]}_image`);
+      fileNumbers.push(fileNumbers[fileNumbers.length - 1] + 1);
       fileNumbers.shift();
-      fileNumbers.push(fileNumbers[fileNumbers.length - 1] + 1)
-      if ($('img').length == 10) {
+      if ($('.preview').length == 10) {
         $('.js-file_label').hide();
       }
     }
@@ -66,7 +65,7 @@ $(document).on('turbolinks:load', ()=> {
     if ($('.js-file').length == 0) {
       $('#image-box').append(buildFileField(targetIndex))
     }
-    if ($('img').length < 10) {
+    if ($('.preview').length < 10) {
       $('.js-file_label').show();
     }
     console.log(fileNumbers)
