@@ -11,7 +11,11 @@ $(document).on('turbolinks:load', ()=> {
   }
 
   const buildImg = (index, url)=> {
-    const html = `<img data-index="${index}" src="${url}" width="100px" height="100px">`;
+    console.log('koko')
+    const html = `<div class="preview">
+                    <img data-index="${index}" width="100" height="100" src="${url}">
+                    <div class="js-remove" data-index="${index}">削除</div>
+                  </div>`;
     return html;
   }
 
@@ -25,19 +29,21 @@ $(document).on('turbolinks:load', ()=> {
   // $('.hidden-check').hide();
 
 
-  $('#image-box').on('change', '.js-file', function(e) {
+  $('.js-file_input').on('change', '.js-file', function(e) {
     const targetIndex = $(this).data('index')
+    console.log(targetIndex)
     // ファイルのブラウザ上でのURLを取得する
     const file = e.target.files[0];
     const blobUrl = window.URL.createObjectURL(file);
     if (img = $(`img[data-index="${targetIndex}"]`)[0]) {
-      console.log('edit')
+      console.log(img)
       img.setAttribute('src', blobUrl);
     } else {
       console.log('new')
-      $('#previews').append(buildImg(targetIndex, blobUrl));
+      $('.js-file_label').before(buildImg(targetIndex, blobUrl));
       // fileNumbersの先頭の数字を使ってnameを作り、その数字を配列から取り除く
-      $('#image-box').append(buildFileField(fileNumbers[0]));
+      $('.js-file_input').append(buildFileField(fileNumbers[0]));
+      $('.js-file_label').attr('for', `product_images_attributes_${fileNumbers[0]}_image`);
       fileNumbers.shift();
       fileNumbers.push(fileNumbers[fileNumbers.length - 1] + 1)
     }
@@ -45,7 +51,7 @@ $(document).on('turbolinks:load', ()=> {
   })
 
   // 削除ボタンを押した時のイベント
-  $('#image-box').on('click', '.js-remove', function() {
+  $('#previews').on('click', '.js-remove', function() {
     targetIndex = this.dataset.index
     hiddenCheck = document.getElementById(`product_images_attributes_${targetIndex}__destroy`)
     console.log(targetIndex)

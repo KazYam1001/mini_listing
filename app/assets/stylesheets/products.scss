@@ -1,3 +1,25 @@
-// Place all the styles related to the products controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+* {
+  box-sizing: border-box;
+}
+
+#previews {
+  width: 500px;
+  display: flex;
+  flex-wrap: wrap;
+  label {
+    width: 100px;;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    background-color: aquamarine;
+  }
+}
+
+.preview {
+  width: 100px;
+  height: 150px;
+  border: solid 1px black;
+}
+
