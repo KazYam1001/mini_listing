@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
     before_action :product_find, except: [:index, :new, :create]
 
     def index
-        @products = Product.all
+        @products = Product.all.order('created_at DESC')
     end
 
     def show
@@ -16,7 +16,6 @@ class ProductsController < ApplicationController
 
     def create
         product = Product.create(product_params)
-
     end
 
     def edit

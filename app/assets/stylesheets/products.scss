@@ -7,12 +7,12 @@
   display: flex;
   flex-wrap: wrap;
   &__new-label {
-    width: 100px;;
+    width: 100px;
     height: 150px;
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
     background-color: aquamarine;
   }
   .delete-btn {
