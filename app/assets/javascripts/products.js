@@ -5,16 +5,15 @@ $(document).on('turbolinks:load', ()=> {
                     <input class="js-file" type="file" data-index="${index}"
                     name="product[images_attributes][${index}][image]"
                     id="product_images_attributes_${index}_image"><br>
-                    <div class="js-remove" data-index="${index}">削除</div>
                   </div>`;
     return html;
   }
 
   const buildImg = (index, url)=> {
-    console.log('koko')
-    const html = `<div class="preview">
+    const html = `<div class="preview" data-index="${index}">
                     <img data-index="${index}" width="100" height="100" src="${url}">
-                    <div class="js-remove" data-index="${index}">削除</div>
+                    <label for="product_images_attributes_${index}_image">編集</label>
+                    <div class="delete-btn js-remove" data-index="${index}">削除</div>
                   </div>`;
     return html;
   }
@@ -26,7 +25,7 @@ $(document).on('turbolinks:load', ()=> {
   fileNumbers.splice(0, lastIndex)
   // labelのforを最後のinputのindexに合わせる
   $('.js-file_label').attr('for', `product_images_attributes_${lastIndex}_image`);
-  // $('.hidden-check').hide();
+  $('.js-file_input').hide();
 
 
   $('.js-file_input').on('change', '.js-file', function(e) {
@@ -46,6 +45,9 @@ $(document).on('turbolinks:load', ()=> {
       $('.js-file_label').attr('for', `product_images_attributes_${fileNumbers[0]}_image`);
       fileNumbers.shift();
       fileNumbers.push(fileNumbers[fileNumbers.length - 1] + 1)
+      if ($('img').length == 10) {
+        $('.js-file_label').hide();
+      }
     }
     console.log(fileNumbers)
   })
@@ -54,16 +56,18 @@ $(document).on('turbolinks:load', ()=> {
   $('#previews').on('click', '.js-remove', function() {
     targetIndex = this.dataset.index
     hiddenCheck = document.getElementById(`product_images_attributes_${targetIndex}__destroy`)
-    console.log(targetIndex)
     if (hiddenCheck) {
       $(`input[data-destroy="${targetIndex}"]`).prop('checked', true)
     }
     // fileのinputと対応するプレビューを削除
-    $(this).parent().remove()
-    $(`img[data-index="${targetIndex}"]`).remove();
+    $(`input[data-index=${targetIndex}]`).remove();
+    $(`.preview[data-index="${targetIndex}"]`).remove();
     // 画像入力欄が0個にならないようにしておく
     if ($('.js-file').length == 0) {
       $('#image-box').append(buildFileField(targetIndex))
+    }
+    if ($('img').length < 10) {
+      $('.js-file_label').show();
     }
     console.log(fileNumbers)
   })

@@ -2,11 +2,11 @@
   box-sizing: border-box;
 }
 
-#previews {
+.previews {
   width: 500px;
   display: flex;
   flex-wrap: wrap;
-  label {
+  &__new-label {
     width: 100px;;
     height: 150px;
     display: flex;
@@ -14,6 +14,9 @@
     align-items: center;
     flex-grow: 1;
     background-color: aquamarine;
+  }
+  .delete-btn {
+    display: inline-block;
   }
 }
 

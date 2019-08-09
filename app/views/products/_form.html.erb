@@ -2,16 +2,17 @@
   <%= form_for @product do |f| %>
 
     <div id="image-box">
-      <div id="previews">
+      <div id="previews" class='previews'>
         <% if @product.persisted? %>
           <% @product.images.each_with_index do |image, i| %>
-            <div class="preview">
-              <%= image_tag image.image.url, data: { index: i }, width: "100", height: '100' %>
-              <div class="js-remove" data-index="<%= i %>" >削除</div>
+            <div class="preview" data-index="<%= i %>"  >
+              <%= image_tag image.image.url, width: "100", height: '100', data: {index: i} %>
+              <%= label_tag :image, '編集', for: "product_images_attributes_#{i}_image" %>
+              <div class="delete-btn js-remove" data-index="<%= i %>" >削除</div>
             </div>
           <% end %>
         <% end %>
-        <%= label_tag :image, "ドラッグ＆ドロップ", class: "js-file_label" %>
+        <%= label_tag :image, "ドラッグ＆ドロップ", class: "js-file_label previews__new-label" %>
       </div>
       <div class='js-file_input'>
         <%= f.fields_for :images do |image| %>
