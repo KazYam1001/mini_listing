@@ -1,0 +1,40 @@
+.content
+  = form_for @product do |f|
+    #image-box
+      #previews.previews
+        - if @product.persisted?
+          - @product.images.each_with_index do |image, i|
+            .preview{"data-index" => i}
+              = image_tag image.image.url, width: "100", height: '100', data: {index: i}
+              = label_tag :image, '編集', for: "product_images_attributes_#{i}_image"
+              .delete-btn.js-remove{"data-index" => i} 削除
+        = label_tag :image, "ドラッグ＆ドロップ", class: "js-file_label previews__new-label"
+      .js-file_input
+        = f.fields_for :images do |image|
+          .js-file_group
+            = image.file_field :image, data:{ index: image.index }, class: 'js-file'
+          - if @product.persisted?
+            = image.check_box :_destroy, class: 'hidden-check', data:{destroy: image.index}
+        - if @product.persisted?
+          .js-file_group
+            = file_field_tag :image, name: "product[images_attributes][#{@product.images.length}][image]", data:{ index: @product.images.length }, class: 'js-file', id: "product_images_attributes_#{@product.images.length}_image"
+    %p 商品名
+    = f.text_field :name
+    %p 商品説明
+    = f.text_area :description
+    %p 商品状態
+    = f.collection_select :state_id, State.all, :id, :name
+    %p 配送料負担
+    = f.collection_select :delivery_fee_id, DeliveryFee.all, :id, :name
+    %p 配送方法
+    = f.collection_select :delivery_way_id, DeliveryWay.all, :id, :name
+    %p 配送元 都道府県
+    = f.collection_select :prefecture_code, JpPrefecture::Prefecture.all, :code, :name
+    %p 配送までの日数
+    = f.text_field :delivery_day
+    日
+    %p 販売価格
+    = f.text_field :price
+    円
+    \#{f.submit}
+  %a.btn{:href => "/"} トップページに戻る
