@@ -12,6 +12,8 @@
     - @items.each do |item|
       %tr
         %td= item.name
+        %td
+          = image_tag item.images.first, width: "100", height: '100'
         %td= link_to 'Show', item
         %td= link_to 'Edit', edit_item_path(item)
         %td= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' }

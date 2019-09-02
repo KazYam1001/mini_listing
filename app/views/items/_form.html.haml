@@ -1,4 +1,4 @@
-= form_for @item do |f|
+= form_for @item, local: true do |f|
   - if @item.errors.any?
     #error_explanation
       %h2= "#{pluralize(@item.errors.count, "error")} prohibited this item from being saved:"
@@ -9,5 +9,17 @@
   .field
     = f.label :name
     = f.text_field :name
+  .field
+    .previews
+      - if @item.persisted?
+        - @item.images.each_with_index do |image, i|
+          .preview{"data-index" => i}
+            = image_tag image, width: "100", height: '100', data: {index: i}
+            = label_tag :image, '編集', for: "product_images_attributes_#{i}_image"
+            .delete-btn.js-remove{"data-index" => i} 削除
+      = label_tag :image, "ドラッグ＆ドロップ", class: "js-file_label previews__new-label"
+    = f.label :images
+    = f.file_field :images, multiple: true, class: 'js-item-file'
+    .item_image_input
   .actions
     = f.submit 'Save'
