@@ -22,6 +22,9 @@
     = f.text_field :name
     %p 商品説明
     = f.text_area :description
+    .categories
+      %p カテゴリー
+      = f.collection_select :category_id, Category.roots, :id, :name, {prompt: '---'}, class: 'js-root_category'
     %p 商品状態
     = f.collection_select :state_id, State.all, :id, :name
     %p 配送料負担

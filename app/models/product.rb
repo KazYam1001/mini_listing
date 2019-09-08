@@ -12,4 +12,6 @@ class Product < ApplicationRecord
   belongs_to_active_hash :delivery_fee
   belongs_to_active_hash :delivery_way
   belongs_to_active_hash :state
+
+  belongs_to :category
 end
