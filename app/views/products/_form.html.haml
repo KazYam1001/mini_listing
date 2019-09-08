@@ -24,7 +24,19 @@
     = f.text_area :description
     .categories
       %p カテゴリー
-      = f.collection_select :category_id, Category.roots, :id, :name, {prompt: '---'}, class: 'js-root_category'
+      - if @product.persisted?
+        .root
+          = f.collection_select :category_id, Category.roots, :id, :name, {prompt: '---', selected: @product.category.root.id}, class: 'js-root_category'
+        .js-children{data: {depth: 1}}
+          = f.collection_select :category_id, @product.category.root.children, :id, :name, {prompt: '---', selected: @product.category.parent.id}, class: 'js-root_category'
+        .js-grand_children{data: {depth: 2}}
+          = f.collection_select :category_id, @product.category.siblings, :id, :name, {prompt: '---'}, class: 'js-root_category'
+      - else
+        .root
+          = f.collection_select :category_id, Category.roots, :id, :name, {prompt: '---'}, class: 'js-root_category'
+        .js-children{data: {depth: 1}}
+        .js-grand_children{data: {depth: 2}}
+
     %p 商品状態
     = f.collection_select :state_id, State.all, :id, :name
     %p 配送料負担

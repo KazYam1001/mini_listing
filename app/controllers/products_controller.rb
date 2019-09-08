@@ -15,7 +15,7 @@ class ProductsController < ApplicationController
     end
 
     def create
-        product = Product.create(product_params)
+        Product.create!(product_params)
     end
 
     def edit
@@ -23,7 +23,7 @@ class ProductsController < ApplicationController
     end
 
     def update
-        @product.update(product_params)
+        @product.update!(product_params)
     end
 
     def destroy
@@ -32,7 +32,7 @@ class ProductsController < ApplicationController
 
     private
     def product_params
-        params.require(:product).permit(:name, :description, :state_id, :delivery_fee_id, :delivery_way_id, :prefecture_code, :address_city, :address_street, :address_building, :delivery_day, :price, images_attributes: [:image, :_destroy, :id])
+        params.require(:product).permit(:name, :description, :category_id, :state_id, :delivery_fee_id, :delivery_way_id, :prefecture_code, :address_city, :address_street, :address_building, :delivery_day, :price, images_attributes: [:image, :_destroy, :id])
     end
 
     def product_find
