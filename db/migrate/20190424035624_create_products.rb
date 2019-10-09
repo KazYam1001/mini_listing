@@ -10,6 +10,7 @@ class CreateProducts < ActiveRecord::Migration[5.2]
       t.integer :delivery_day, null: false
       t.integer :price, null: false
       t.integer :status, null: false, default: "0"
+      t.references :category, foreign_key: true
 
       t.timestamps
     end
