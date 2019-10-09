@@ -23,21 +23,26 @@ $(document).on('turbolinks:load', ()=> {
   let fileNumbers = [lastIndex + 1];
   // labelのforを最後のinputのindexに合わせる
   $('.js-file_label').attr('for', `product_images_attributes_${lastIndex}_image`);
-  $('.js-file_input').hide();
+  // $('.js-file_input').hide();
   if ($('.preview').length == 10) { $('.js-file_label').hide(); }
   console.log(fileNumbers)
 
   $('.js-file_input').on('change', '.js-file', function(e) {
     const targetIndex = $(this).data('index')
-    console.log(targetIndex)
-    // ファイルのブラウザ上でのURLを取得する
     const file = e.target.files[0];
+    // ファイルの中身が空なら削除ボタンを押した扱いにする
+    if (file == null) {
+      console.log('delete')
+      $(`.js-remove[data-index="${targetIndex}"]`).click();
+      return;
+    }
+    // ファイルのブラウザ上でのURLを取得する
     const blobUrl = window.URL.createObjectURL(file);
     if (img = $(`img[data-index="${targetIndex}"]`)[0]) {
-      console.log(img)
+      // console.log('edit')
       img.setAttribute('src', blobUrl);
     } else {
-      console.log('new')
+      // console.log('new')
       $('.js-file_label').before(buildImg(targetIndex, blobUrl));
       // fileNumbersの先頭の数字を使ってnameを作り、その数字を配列から取り除く
       $('.js-file_input').append(buildFileField(fileNumbers[0]));
@@ -56,7 +61,7 @@ $(document).on('turbolinks:load', ()=> {
     targetIndex = this.dataset.index
     hiddenCheck = document.getElementById(`product_images_attributes_${targetIndex}__destroy`)
     if (hiddenCheck) {
-      $(`input[data-destroy="${targetIndex}"]`).prop('checked', true)
+      $(`input[data-destroy="${targetIndex}"]`).val('true');
     }
     // fileのinputと対応するプレビューを削除
     $(`input[data-index=${targetIndex}]`).remove();
