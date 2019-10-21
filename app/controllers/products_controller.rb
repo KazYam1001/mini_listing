@@ -2,7 +2,8 @@ class ProductsController < ApplicationController
     before_action :product_find, except: [:index, :new, :create]
 
     def index
-        @products = Product.all.order('created_at DESC')
+        @products = Product.includes(:category).all.order('created_at DESC')
+        @q = Product.ransack(params[:q])
     end
 
     def show

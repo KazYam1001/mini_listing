@@ -1,4 +1,9 @@
 %div
+  = search_form_for @q, url: search_products_path do |f|
+    = f.label :name_cont, '商品名'
+    = f.text_field :name_cont, {}
+    = f.submit
+%div
   %a.btn{:href => "/products/new"} 出品
 .contents
   = render @products
