@@ -1,7 +1,7 @@
 $(document).on('turbolinks:load', ()=> {
   // 画像用のfile_fieldを生成する関数
   const buildFileField = (index)=> {
-    const html = `<div class="js-file_group">
+    const html = `<div class="js-input">
                     <input class="js-file" type="file" data-index="${index}"
                     name="product[images_attributes][${index}][image]"
                     id="product_images_attributes_${index}_image"><br>
@@ -23,11 +23,11 @@ $(document).on('turbolinks:load', ()=> {
   let fileNumbers = [lastIndex + 1];
   // labelのforを最後のinputのindexに合わせる
   $('.js-file_label').attr('for', `product_images_attributes_${lastIndex}_image`);
-  // $('.js-file_input').hide();
+  // $('.js-inputs').hide();
   if ($('.preview').length == 10) { $('.js-file_label').hide(); }
   console.log(fileNumbers)
 
-  $('.js-file_input').on('change', '.js-file', function(e) {
+  $('.js-inputs').on('change', '.js-file', function(e) {
     const targetIndex = $(this).data('index')
     const file = e.target.files[0];
     // ファイルの中身が空なら削除ボタンを押した扱いにする
@@ -45,7 +45,7 @@ $(document).on('turbolinks:load', ()=> {
       // console.log('new')
       $('.js-file_label').before(buildImg(targetIndex, blobUrl));
       // fileNumbersの先頭の数字を使ってnameを作り、その数字を配列から取り除く
-      $('.js-file_input').append(buildFileField(fileNumbers[0]));
+      $('.js-inputs').append(buildFileField(fileNumbers[0]));
       $('.js-file_label').attr('for', `product_images_attributes_${fileNumbers[0]}_image`);
       fileNumbers.push(fileNumbers[fileNumbers.length - 1] + 1);
       fileNumbers.shift();
