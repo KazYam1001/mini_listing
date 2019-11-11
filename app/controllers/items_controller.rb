@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   # GET /items
   # GET /items.json
   def index
-    @items = Item.with_attached_images
+    @items = Item.with_attached_photoes
   end
 
   # GET /items/1
@@ -35,7 +35,10 @@ class ItemsController < ApplicationController
   # PATCH/PUT /items/1
   # PATCH/PUT /items/1.json
   def update
-    if @item.update
+    if @item.update(item_params)
+      @item.photoes.each do |photo|
+        photo.purge if params[:item][:remove_ids]&.include?(photo.id.to_s)
+      end
       redirect_to @item, notice: 'Item was successfully updated.'
     else
       render :edit
@@ -55,11 +58,11 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.with_attached_images.find(params[:id])
+      @item = Item.with_attached_photoes.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def item_params
-      params.require(:item).permit(:name, images: [])
+      params.require(:item).permit(:name, photoes: [])
     end
 end
