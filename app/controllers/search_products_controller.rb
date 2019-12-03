@@ -1,8 +1,8 @@
 class SearchProductsController < ApplicationController
   def index
     @q = Product.ransack(params[:q])
-    if params[:category_id].present?
-      products = Product.where(category_id: Category.find(params[:category_id]).subtree)
+    if params[:product]
+      products = Product.where(category_id: Category.find(params[:product][:category_id]).subtree)
       .ransack(search_params)
     else
       products = Product.ransack(search_params)
