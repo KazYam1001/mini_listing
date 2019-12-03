@@ -28,7 +28,7 @@ $(document).on('turbolinks:load', ()=> {
     if ($('.preview').length == 10) { $('.js-file_label').hide(); }
     console.log(fileNumbers)
 
-    $('.js-inputs').on('change', '.js-file', function(e) {
+    $('.js-file_input').on('change', '.js-file', function(e) {
       const targetIndex = $(this).data('index')
       const file = e.target.files[0];
       // ファイルの中身が空なら削除ボタンを押した扱いにする
@@ -46,7 +46,7 @@ $(document).on('turbolinks:load', ()=> {
         // console.log('new')
         $('.js-file_label').before(buildImg(targetIndex, blobUrl));
         // fileNumbersの先頭の数字を使ってnameを作り、その数字を配列から取り除く
-        $('.js-inputs').append(buildFileField(fileNumbers[0]));
+        $('.js-file_input').append(buildFileField(fileNumbers[0]));
         $('.js-file_label').attr('for', `product_images_attributes_${fileNumbers[0]}_image`);
         fileNumbers.push(fileNumbers[fileNumbers.length - 1] + 1);
         fileNumbers.shift();

@@ -1,16 +1,21 @@
-.search-form
+ソート
+-# products_helperのransack_sort_urls(自作)を呼び出してセレクトボックスを作る
+= select_tag :sort, options_for_select(ransack_sort_urls), class: 'js-sort'
+#search-form
   = search_form_for @q, url: search_products_path do |f|
     %div
       = f.label :name_cont, '商品名'
       = f.text_field :name_cont
     .categories
       = label_tag :category_id, 'カテゴリ'
-      = collection_select :product, :category_id, Category.roots, :id, :name, {prompt: '---'}, {name: 'category_id', id: 'category_id'}
+      = collection_select :product, :category_id, Category.roots, :id, :name, {prompt: '---'}, { name: nil, class: 'js-category'}
     %div
       = f.label :price, '価格'
       = f.number_field :price_gteq
       = f.number_field :price_lteq
-
+    %div
+      = f.label :status_in, '取引状態'
+      = f.collection_check_boxes :status_in, Product.statuses, :last, :first, {}
     = f.submit
 .contents
   = render partial: 'products/product', collection: @search_results, as: :product
