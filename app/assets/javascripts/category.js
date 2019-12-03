@@ -17,9 +17,7 @@ $(document).on('turbolinks:load', ()=> {
         categoryData.categories.forEach(category => {
           optionTags += buildOptions(category)
         });
-        $(`div[data-depth=${categoryData.depth}]`).empty();
-        $(`div[data-depth=${categoryData.depth+1}]`).empty();
-        $(`div[data-depth=${categoryData.depth}]`).append(`<select class="js-root_category" name="product[category_id]"><option>---</option>${optionTags}</select>`);
+        $('.categories').append(`<select class="js-category" name="product[category_id]"><option value="${categoryId}">---</option>${optionTags}</select>`);
       }
     })
     .fail(()=>{
@@ -27,7 +25,8 @@ $(document).on('turbolinks:load', ()=> {
     });
   }
 
-  $('.categories').on('change', '.js-root_category', function(){
+  $('.categories').on('change', '.js-category', function(){
     getCategory($(this).val());
+    $(this).nextAll().remove();
   })
 });
