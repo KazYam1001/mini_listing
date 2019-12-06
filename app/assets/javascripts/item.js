@@ -1,5 +1,5 @@
 $(document).on('turbolinks:load', ()=> {
-  if ($('#new_item')[0]) {
+  if ($('.js_item-form')[0]) {
     const buildPreview = (src, index)=> {
       const html = `<div class='js_item-preview' data-index=${index}>
                       <img src=${src} height='100' width='100'>
@@ -11,11 +11,15 @@ $(document).on('turbolinks:load', ()=> {
       return html;
     }
 
+    // 削除ボタンが押された時に動く関数
+    // 呼び出し時にthis(削除ボタン)を受け取る
     const removePhotoes = deleteBtn => {
       const preview = deleteBtn.parentNode.parentNode;
       const targetIndex = deleteBtn.dataset.index;
       const input = document.querySelector(`.js_item-file[data-index="${targetIndex}"]`);
+      // targetIndexから取得したinputにdata-id(DB上のレコードID)を持たせているので、それをremoveIdsで保持する
       removeIds.push(input.dataset.id);
+      // inputとpreviewを削除する
       input.parentNode.removeChild(input);
       preview.parentNode.removeChild(preview);
     }
@@ -53,6 +57,7 @@ $(document).on('turbolinks:load', ()=> {
         document.querySelector('.photo-inputs').insertAdjacentHTML("beforeend", `<input name="item[photoes][]" class="js_item-file" type="file" id="file${targetIndex + 1}" data-index="${targetIndex + 1}">`);
         newLabel.setAttribute('for', `file${targetIndex + 1}`);
         newLabel.insertAdjacentHTML('beforebegin', buildPreview(blobURL, targetIndex));
+        // プレビューの数が10なら灰色ラベルを消す
         if (document.querySelectorAll('.js_item-preview').length === 10) {
           newLabel.style.display = 'none';
         }
