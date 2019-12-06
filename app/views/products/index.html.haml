@@ -4,6 +4,7 @@
     = f.text_field :name_cont, {}
     = f.submit
 %div
-  %a.btn{:href => "/products/new"} 出品
+  %a.btn{href: new_product_path} Product出品
+  %a.btn{href: new_item_path} Item出品
 .contents
   = render @products
