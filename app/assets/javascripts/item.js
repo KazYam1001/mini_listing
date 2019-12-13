@@ -16,8 +16,9 @@ $(document).on('turbolinks:load', ()=> {
     const removePhotoes = deleteBtn => {
       const preview = deleteBtn.parentNode.parentNode;
       const targetIndex = deleteBtn.dataset.index;
+      // data-indexがtargetIndexのinputを取得する
       const input = document.querySelector(`.js_item-file[data-index="${targetIndex}"]`);
-      // targetIndexから取得したinputにdata-id(DB上のレコードID)を持たせているので、それをremoveIdsで保持する
+      // 上記inoutのdata-idにDB上のレコードIDを持たせているので、それをremoveIdsで保持する
       removeIds.push(input.dataset.id);
       // inputとpreviewを削除する
       input.parentNode.removeChild(input);
@@ -30,9 +31,10 @@ $(document).on('turbolinks:load', ()=> {
     const itemForm = document.querySelector('.js_item-form');
     const removeIds = []
 
-    // js_item-file の数を新規画像追加用のindexに使う
+    // ページ読み込み時、js_item-file の数を新規画像用のindexに使う
     itemFiles[itemFiles.length - 1].dataset.index = lastIndex;
     itemFiles[itemFiles.length - 1].setAttribute('id', `file${lastIndex}`);
+    // labelのforも同じindexに更新
     newLabel.setAttribute('for', `file${lastIndex}`);
 
     // 画像入力時の処理
@@ -79,6 +81,7 @@ $(document).on('turbolinks:load', ()=> {
       const removeIdSet = new Set(removeIds.filter(v => v));
       if (removeIdSet.size !== 0) {
         removeIdSet.forEach( (ele) => {
+          // removeIdSetの中身を全てhiddenなinputで送る。paramsの名前はitem[remove_ids]
           itemForm.insertAdjacentHTML('beforeend', `<input type="hidden" name="item[remove_ids][]" value="${ele}">`);
         });
       }

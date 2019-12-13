@@ -26,11 +26,12 @@ Imagesテーブルにsrcというカラムを作り商品の画像を保存し�
 - resourcesの7アクションが全て実装済み
 - 画像の複数枚投稿、プレビュー、投稿前の削除＆編集
 - 出品時にカテゴリを入力する機能。ajaxで子・孫カテゴリを選択するセレクトボックス。
+  - category.js及び api/categories_controller
 - ransackを使った検索機能。カテゴリの絞り込み、ソートを実装済み。
-  - search_products_controller#indexが検索アクション
+  - search.js及び search_products_controller
 
 ## Items
-Itemモデル及びitems_controllerで
+Itemモデル及びitems_controller、item.jsで
 
 ActiveStorageを使った出品機能を実装しています。
 

@@ -37,6 +37,7 @@ class ItemsController < ApplicationController
   def update
     if @item.update(item_params)
       @item.photoes.each do |photo|
+        # itemに紐づくphotoのidがparams[:item][:remove_ids]の中に含まれていればpurge
         photo.purge if params[:item][:remove_ids]&.include?(photo.id.to_s)
       end
       redirect_to @item, notice: 'Item was successfully updated.'

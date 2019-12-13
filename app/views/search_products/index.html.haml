@@ -1,5 +1,5 @@
 ソート
--# products_helperのransack_sort_urls(自作)を呼び出してセレクトボックスを作る
+-# products_helper内のransack_sort_urls(自作)を呼び出してセレクトボックスを作る
 = select_tag :sort, options_for_select(ransack_sort_urls), class: 'js-sort'
 #search-form
   = search_form_for @q, url: search_products_path do |f|
