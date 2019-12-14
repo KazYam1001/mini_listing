@@ -4,9 +4,11 @@
 # 導入
 ```
 git clone https://github.com/KazYam1001/mini_listing.git
-bundle exec rails db:create
-bundle exec rails db:migrate
-bundle exec rails db:seed
+cd mini_listing
+bundle
+rails db:create
+rails db:migrate
+rails db:seed
 ```
 
 # どう使うの？
@@ -33,7 +35,7 @@ Imagesテーブルにsrcというカラムを作り商品の画像を保存し�
 ## Items
 Itemモデル及びitems_controller、item.jsで
 
-ActiveStorageを使った出品機能を実装しています。
+ActiveStorageを使った出品機能を実装しています(商品名と画像のみ)
 
 photoesというアタッチメントで画像を保存しています。
 
