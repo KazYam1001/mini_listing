@@ -11,10 +11,10 @@ $(document).on('turbolinks:load', ()=> {
       dataType: 'json',
       data: { category_id: categoryId },
     })
-    .done((categoryData)=>{
-      if (categoryData.categories.length !== 0){
+    .done((categories)=>{
+      if (categories.length !== 0){
         let optionTags
-        categoryData.categories.forEach(category => {
+        categories.forEach(category => {
           optionTags += buildOptions(category)
         });
         $('.categories').append(`<select class="js-category" name="product[category_id]"><option value="${categoryId}">---</option>${optionTags}</select>`);
