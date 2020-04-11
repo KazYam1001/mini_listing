@@ -2,10 +2,12 @@
   box-sizing: border-box;
 }
 
+// でかい箱
 .previews {
   width: 500px;
   display: flex;
   flex-wrap: wrap;
+  // ラベル
   &__new-label {
     width: 100px;
     height: 150px;
@@ -20,6 +22,7 @@
   }
 }
 
+// プレビュー
 .preview {
   width: 100px;
   height: 150px;
